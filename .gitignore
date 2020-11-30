@@ -1,0 +1,6 @@
+.env
+
+./backup/
+./data/letsencrypt/
+./data/redmine/files/
+./data/redmine/plugins/
