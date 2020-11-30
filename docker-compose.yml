@@ -1,0 +1,47 @@
+version: "3.1"
+
+services:
+  # certbot:
+  #   image: certbot/certbot
+  #   restart: always
+  #   volumes: 
+  #     - ./data/letsencrypt:/etc/letsencrypt
+  #     - certbot:/var/www/certbot
+  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  nginx:
+    image: nginx:1.19.5-alpine
+    restart: always
+    ports: 
+      - "80:80"
+      - "443:443"
+    volumes: 
+      - ./data/nginx/conf:/etc/nginx/conf.d
+      # - ./data/nginx/ssl:/etc/ssl/private
+      # - ./data/letsencrypt:/etc/letsencrypt
+      # - certbot:/var/www/certbot
+    # command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  redmine:
+    image: redmine:4.1.1-alpine
+    restart: always
+    volumes: 
+      - ./data/redmine/conf/configuration.yml:/usr/src/redmine/config/configuration.yml
+      - ./data/redmine/files:/usr/src/redmine/files
+      - ./data/redmine/plugins:/usr/src/redmine/plugins
+    environment: 
+      REDMINE_DB_POSTGRES: db
+      REDMINE_DB_DATABASE: redmine
+      REDMINE_DB_USERNAME: postgres
+      REDMINE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+  db:
+    image: postgres:13.1-alpine
+    restart: always
+    volumes: 
+      - db-data:/var/lib/postgresql/data
+      - ./backup/db:/backup
+    environment: 
+      POSTGRES_DB: redmine
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+volumes: 
+  db-data:
+  # - certbot:
