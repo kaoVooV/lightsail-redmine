@@ -1,6 +1,6 @@
 .env
 
-./backup/
-./data/letsencrypt/
-./data/redmine/files/
-./data/redmine/plugins/
+backup/
+data/https-portal/
+data/redmine/files/
+data/redmine/plugins/
