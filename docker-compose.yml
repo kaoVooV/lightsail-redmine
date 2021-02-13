@@ -10,8 +10,8 @@ services:
     volumes:
       - ./data/https-portal:/var/lib/https-portal
     environment:
-      STAGE: local
-      DOMAINS: "localhost -> http://redmine:3000"
+      STAGE: production
+      DOMAINS: "redmine.2g2t.biz -> http://redmine:3000"
       ACCESS_LOG: stdout
       ERROR_LOG: stdout
       TZ: Asia/Tokyo
